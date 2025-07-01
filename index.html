@@ -1,77 +1,466 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>nhenhecas</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-  <style>
-    body, h1 {
-      font-family: "Raleway", sans-serif;
-    }
-
-    body, html {
-      height: 100%;
-      margin: 0;
-    }
-
-    .bgimg {
-      background-image: url('bg.gif');
-      min-height: 100%;
-      background-position: center;
-      background-size: cover;
-    }
-
-    .custom-card {
-      border-radius: 16px;
-      overflow: hidden;
-      background-color: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miguel 'nhenheca' Rodrigues</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            background-color: #f0f4f8; /* Light background */
+        }
+        #gameCanvas {
+            position: fixed; /* Keep canvas in viewport */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10; /* Below content */
+            pointer-events: none; /* Allow clicks to pass through to content */
+        }
+        .portfolio-section {
+            position: relative; /* For z-index and positioning */
+            z-index: 20; /* Above canvas */
+            background-color: white;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            max-width: 90%; /* Responsive width */
+            transition: border-color 0.2s ease-in-out; /* Smooth transition for collision effect */
+        }
+        .portfolio-section.collided {
+            border: 3px solid #6366f1; /* Indigo-500 for collision */
+        }
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .portfolio-section {
+                max-width: 70%;
+            }
+        }
+        @media (min-width: 1024px) {
+            .portfolio-section {
+                max-width: 60%;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center py-8">
 
-  <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+    <!-- Score Display - fixed to top right -->
+    <div id="scoreDisplay" class="fixed top-4 right-4 bg-white px-6 py-3 rounded-full shadow-lg text-2xl font-bold text-gray-800 z-30">Collected: 0/0</div>
 
-    <!-- Project Grid Section -->
-    <div class="w3-container w3-padding-64 w3-center">
-      <h2 class="w3-xxlarge">MY PROJECTS</h2>
+    <header class="text-center mb-12 z-20 relative w-full">
+        <h1 class="text-5xl font-extrabold text-gray-900 mb-4">Miguel 'nhenhecas' Rodrigues</h1>
+        <p class="text-xl text-gray-600 mb-6">Olá! Use the arrow keys to move the ball around.</p>
+    </header>
 
-      <div class="w3-row-padding w3-margin-top">
+    <!-- Canvas for the interactive ball -->
+    <canvas id="gameCanvas"></canvas>
 
-        <!-- Project 1 -->
-        <div class="w3-third w3-margin-bottom">
-          <div class="w3-card-4 custom-card">
-            <img src="project1.jpg" alt="" style="width:100%">
-            <div class="w3-container">
-              <h3>Nhenhecas Stalker Anomaly Birdshot</h3>
-              <p>A Mod for STALKER ANOMALY/GAMMA that adds Birdshot compability</p>
-              <a href="https://github.com/nhenheca/stalker_anomaly_nhenhecas_birdshot" class="w3-button w3-black w3-margin-bottom">See more</a>
+    <main class="w-full flex flex-col items-center">
+
+        <!-- About Me Section -->
+        <section id="about-me" class="portfolio-section w-full">
+            <h2 class="text-4xl font-bold text-gray-800 mb-6">About Me</h2>
+            <p class="text-lg text-gray-700 leading-relaxed">
+               I'm a passionate programmer with experience in full-stack development. Currently, I’m diving into the world of cybersecurity, balancing work and study to deepen my skills. I love gaming and enjoy creating my own games through coding — combining creativity with technical know-how is what drives me.
+            </p>
+        </section>
+
+         
+	<!-- Skills Section -->
+	<!--
+        <section id="skills" class="portfolio-section w-full">
+            <h2 class="text-4xl font-bold text-gray-800 mb-6">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Front-End</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>HTML5, CSS3, JavaScript (ES6+)</li>
+                        <li>React, Vue.js</li>
+                        <li>Tailwind CSS, Bootstrap</li>
+                        <li>Responsive Design</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Back-End</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>Node.js, Express.js</li>
+                        <li>Python, Flask, Django</li>
+                        <li>RESTful APIs</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Tools & Databases</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>Git, GitHub</li>
+                        <li>MongoDB, PostgreSQL</li>
+                        <li>Firebase, Netlify</li>
+                        <li>VS Code, npm/yarn</li>
+                    </ul>
+                </div>
             </div>
-          </div>
-        </div>
+        </section> 
+	-->
 
-        <!-- Project 2 -->
-        <div class="w3-third w3-margin-bottom">
-          <div class="w3-card-4 custom-card">
-            <img src="project2.jpg" alt="" style="width:100%">
-            <div class="w3-container">
-              <h3>NotesReminder</h3>
-              <p>A basic app that lets you make "Post-it" widgets on your desktop with reminders. </p>
-              <a href="https://github.com/nhenheca/NotesReminder" class="w3-button w3-black w3-margin-bottom">See more</a>
+        <!-- Projects Section -->
+        <section id="projects" class="portfolio-section w-full">
+            <h2 class="text-4xl font-bold text-gray-800 mb-6">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Nhenhecas STALKER Anomaly Birdshot</h3>
+                    <p class="text-gray-700 mb-4">
+                        A mod that adds of STALKER Anomaly that adds Birdshot to the game.
+                    </p>
+                    <a href="https://github.com/nhenheca/stalker_anomaly_nhenhecas_birdshot" class="text-indigo-600 hover:text-indigo-800 font-medium">View Project &rarr;</a>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Notes Reminder</h3>
+                    <p class="text-gray-700 mb-4">
+                        A post-it app that lets you create post-it with time reminders.
+                    </p>
+                    <a href="https://github.com/nhenheca/NotesReminder" class="text-indigo-600 hover:text-indigo-800 font-medium">View Project &rarr;</a>
+                </div>
+		<!--
+                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Project Gamma</h3>
+                    <p class="text-gray-700 mb-4">
+                        A data visualization dashboard built with Vue.js and D3.js, presenting complex datasets
+                        in an interactive and intuitive manner.
+                    </p>
+                    <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">View Project &rarr;</a>
+                </div>
+		-->
             </div>
-          </div>
-        </div>
+        </section>
 
-      </div>
-    </div>
-    <footer class="w3-container w3-center w3-padding-32 w3-text-white">
-      <p>Created by Miguel "nhenhecas" Rodrigues</p>
-      <p><a href="https://github.com/nhenheca" target="_blank" class="w3-button w3-black w3-round-large">GitHub: @nhenheca</a> </p>
+        <!-- Contact Section -->
+        <section id="contact" class="portfolio-section w-full">
+            <h2 class="text-4xl font-bold text-gray-800 mb-6">Contact</h2>
+            <p class="text-lg text-gray-700 mb-4">
+                Feel free to reach out if you have any questions or just want to connect!
+            </p>
+            <ul class="text-lg text-gray-700 space-y-2">
+                <li>Email: <a href="mailto:mcpr.inf@gmail.com" class="text-indigo-600 hover:text-indigo-800">mcpr.inf@gmail.com</a></li>
+                <li>LinkedIn: <a href="https://www.linkedin.com/in/miguel-cunha-rodrigues/" target="_blank" class="text-indigo-600 hover:text-indigo-800">https://www.linkedin.com/in/miguel-cunha-rodrigues/</a></li>
+                <li>GitHub: <a href="https://github.com/nhenheca" target="_blank" class="text-indigo-600 hover:text-indigo-800">https://github.com/nhenheca</a></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 text-center text-gray-500 text-sm z-20 relative">
+        <p>&copy; 2025 Nhenhecas. All rights reserved.</p>
     </footer>
-  </div>
+
+    <script>
+        // Get the canvas element and its 2D rendering context
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+
+        // Set canvas dimensions to fill the window
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); // Initial resize
+
+        // Ball properties
+        const ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 20,
+            color: '#ef4444', // Red-500
+            vx: 0, // velocity x
+            vy: 0, // velocity y
+            friction: 0.98, // Air resistance / damping
+            gravity: 0.1, // Slight downward pull
+            bounce: 0.7, // Coefficient of restitution
+            maxSpeed: 10 // Maximum speed to prevent excessive velocity
+        };
+
+        // Keyboard input handling
+        const keys = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = true;
+                e.preventDefault(); // Prevent default scroll behavior
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = false;
+            }
+        });
+
+        // Get all portfolio sections for collision detection
+        const portfolioSections = document.querySelectorAll('.portfolio-section');
+
+        // Collectibles properties
+        let collectibles = [];
+        let score = 0;
+        let totalCollectibles = 0;
+
+        // Function to check if a rectangle (collectible) overlaps with any portfolio section
+        function isOverlappingSection(collectibleRect) {
+            for (const section of portfolioSections) {
+                const sectionRect = section.getBoundingClientRect();
+                // Convert sectionRect to page-relative coordinates for comparison with collectibleRect
+                const sectionPageRect = {
+                    left: sectionRect.left + window.scrollX,
+                    right: sectionRect.right + window.scrollX,
+                    top: sectionRect.top + window.scrollY,
+                    bottom: sectionRect.bottom + window.scrollY,
+                    width: sectionRect.width,
+                    height: sectionRect.height
+                };
+
+                // Check for overlap
+                if (collectibleRect.x < sectionPageRect.right &&
+                    collectibleRect.x + collectibleRect.size > sectionPageRect.left &&
+                    collectibleRect.y < sectionPageRect.bottom &&
+                    collectibleRect.y + collectibleRect.size > sectionPageRect.top) {
+                    return true; // Overlaps
+                }
+            }
+            return false; // No overlap
+        }
+
+        // Function to generate random collectibles
+        function generateCollectibles() {
+            collectibles = []; // Clear existing collectibles
+            score = 0; // Reset score
+            const numCollectiblesToAttempt = Math.floor(Math.random() * 10) + 10; // Attempt to place 10 to 19 collectibles
+            const collectibleSize = 20; // Increased size for better visibility
+
+            let attempts = 0;
+            const maxAttempts = 500; // Increase attempts to find non-overlapping spots
+
+            // Use document's scroll dimensions for collectible placement
+            const pageScrollWidth = document.documentElement.scrollWidth;
+            const pageScrollHeight = document.documentElement.scrollHeight;
+
+            while (collectibles.length < numCollectiblesToAttempt && attempts < maxAttempts) {
+                let x = Math.random() * (pageScrollWidth - collectibleSize);
+                let y = Math.random() * (pageScrollHeight - collectibleSize);
+
+                // Ensure collectibles are not too close to the page edges
+                x = Math.max(collectibleSize / 2, Math.min(x, pageScrollWidth - collectibleSize * 1.5));
+                y = Math.max(collectibleSize / 2, Math.min(y, pageScrollHeight - collectibleSize * 1.5));
+
+                const newCollectibleRect = {
+                    x: x,
+                    y: y,
+                    size: collectibleSize
+                };
+
+                // Only add if it doesn't overlap with any portfolio section
+                if (!isOverlappingSection(newCollectibleRect)) {
+                    collectibles.push({
+                        x: x,
+                        y: y,
+                        size: collectibleSize,
+                        collected: false
+                    });
+                }
+                attempts++;
+            }
+            totalCollectibles = collectibles.length; // Set total based on actual generated count
+            scoreDisplay.textContent = `Collected: ${score}/${totalCollectibles}`; // Update display with actual total
+        }
+
+        // Function to draw the ball
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Function to draw collectibles
+        function drawCollectibles() {
+            const scrollX = window.scrollX || document.documentElement.scrollLeft;
+            const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+            collectibles.forEach(collectible => {
+                if (!collectible.collected) {
+                    ctx.fillStyle = '#facc15'; // Yellow-400
+                    // Draw collectible relative to the current scroll position
+                    ctx.fillRect(collectible.x - scrollX, collectible.y - scrollY, collectible.size, collectible.size);
+                }
+            });
+        }
+
+        // Game loop
+        function animate() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Apply keyboard input as force
+            const acceleration = 0.5;
+            if (keys.ArrowUp) ball.vy -= acceleration;
+            if (keys.ArrowDown) ball.vy += acceleration;
+            if (keys.ArrowLeft) ball.vx -= acceleration;
+            if (keys.ArrowRight) ball.vx += acceleration;
+
+            // Apply friction
+            ball.vx *= ball.friction;
+            ball.vy *= ball.friction;
+
+            // Apply gravity (optional, can be removed for pure control)
+            // ball.vy += ball.gravity;
+
+            // Cap max speed
+            const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+            if (speed > ball.maxSpeed) {
+                ball.vx = (ball.vx / speed) * ball.maxSpeed;
+                ball.vy = (ball.vy / speed) * ball.maxSpeed;
+            }
+
+            // Update ball position
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+
+            // Collision with canvas boundaries (viewport boundaries)
+            if (ball.x + ball.radius > canvas.width) {
+                ball.x = canvas.width - ball.radius;
+                ball.vx *= -ball.bounce;
+            } else if (ball.x - ball.radius < 0) {
+                ball.x = ball.radius;
+                ball.vx *= -ball.bounce;
+            }
+
+            if (ball.y + ball.radius > canvas.height) {
+                ball.y = canvas.height - ball.radius;
+                ball.vy *= -ball.bounce;
+            } else if (ball.y - ball.radius < 0) {
+                ball.y = ball.radius;
+                ball.vy *= -ball.bounce;
+            }
+
+            // Collision with portfolio sections
+            portfolioSections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+
+                // Convert DOM rect coordinates to canvas (viewport) coordinates
+                const sectionX = rect.left;
+                const sectionY = rect.top;
+                const sectionWidth = rect.width;
+                const sectionHeight = rect.height;
+
+                // Check for collision using AABB (Axis-Aligned Bounding Box) for the rectangle
+                // and circle collision detection for the ball.
+                // Find the closest point on the rectangle to the center of the circle
+                let testX = ball.x;
+                let testY = ball.y;
+
+                if (ball.x < sectionX) testX = sectionX; // left edge
+                else if (ball.x > sectionX + sectionWidth) testX = sectionX + sectionWidth; // right edge
+
+                if (ball.y < sectionY) testY = sectionY; // top edge
+                else if (ball.y > sectionY + sectionHeight) testY = sectionY + sectionHeight; // bottom edge
+
+                // Calculate the distance between the closest point and the circle's center
+                let distX = ball.x - testX;
+                let distY = ball.y - testY;
+                let distance = Math.sqrt((distX * distX) + (distY * distY));
+
+                if (distance <= ball.radius) {
+                    // Collision detected!
+                    section.classList.add('collided'); // Add collision effect
+
+                    // Determine which side of the rectangle was hit for more realistic bounce
+                    // Calculate overlap
+                    const overlapX = ball.radius - Math.abs(distX);
+                    const overlapY = ball.radius - Math.abs(distY);
+
+                    if (overlapX > overlapY) { // Vertical collision (top/bottom)
+                        if (ball.y < testY) { // Hit top edge
+                            ball.y = sectionY - ball.radius;
+                        } else { // Hit bottom edge
+                            ball.y = sectionY + sectionHeight + ball.radius;
+                        }
+                        ball.vy *= -ball.bounce;
+                        ball.vx *= ball.friction; // Apply friction on horizontal movement
+                    } else { // Horizontal collision (left/right)
+                        if (ball.x < testX) { // Hit left edge
+                            ball.x = sectionX - ball.radius;
+                        } else { // Hit right edge
+                            ball.x = sectionX + sectionWidth + ball.radius;
+                        }
+                        ball.vx *= -ball.bounce;
+                        ball.vy *= ball.friction; // Apply friction on vertical movement
+                    }
+
+                    // Small push away to prevent sticking
+                    ball.x += ball.vx * 0.1;
+                    ball.y += ball.vy * 0.1;
+
+                } else {
+                    // No collision, remove effect after a short delay if it was there
+                    if (section.classList.contains('collided')) {
+                        setTimeout(() => {
+                            section.classList.remove('collided');
+                        }, 100); // Remove class after 100ms
+                    }
+                }
+            });
+
+            // Collision with collectibles
+            const scrollX = window.scrollX || document.documentElement.scrollLeft;
+            const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+            collectibles.forEach(collectible => {
+                if (!collectible.collected) {
+                    // Calculate collectible's current viewport position
+                    const collectibleViewportX = collectible.x - scrollX;
+                    const collectibleViewportY = collectible.y - scrollY;
+
+                    // Simple AABB collision for square collectibles with circle ball
+                    const closestX = Math.max(collectibleViewportX, Math.min(ball.x, collectibleViewportX + collectible.size));
+                    const closestY = Math.max(collectibleViewportY, Math.min(ball.y, collectibleViewportY + collectible.size));
+
+                    const distX = ball.x - closestX;
+                    const distY = ball.y - closestY;
+                    const distance = Math.sqrt((distX * distX) + (distY * distY));
+
+                    if (distance < ball.radius) {
+                        collectible.collected = true;
+                        score++;
+                        scoreDisplay.textContent = `Collected: ${score}/${totalCollectibles}`; // Update display
+                    }
+                }
+            });
+
+            // Draw the ball and collectibles
+            drawCollectibles();
+            drawBall();
+
+            // Request next frame
+            requestAnimationFrame(animate);
+        }
+
+        // Start the animation loop and generate collectibles when the window loads
+        window.onload = function() {
+            // Initial generation of collectibles
+            generateCollectibles();
+            animate();
+        };
+    </script>
 </body>
 </html>
